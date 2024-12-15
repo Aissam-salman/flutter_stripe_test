@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:other_stripe/keys.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -46,8 +46,7 @@ class _HomepageState extends State<Homepage> {
 
   makeIntentForPayment(amountToBeCharge, currency) async {
     try {
-      String parsedAmount =
-          (int.parse(amountToBeCharge) * 100).toString();
+      String parsedAmount = (int.parse(amountToBeCharge) * 100).toString();
       Map<String, dynamic>? paymentInfo = {
         "amount": parsedAmount,
         "currency": currency,
@@ -57,7 +56,7 @@ class _HomepageState extends State<Homepage> {
           Uri.parse("https://api.stripe.com/v1/payment_intents"),
           body: paymentInfo,
           headers: {
-            "Authorization": "Bearer $secretKey",
+            "Authorization": "Bearer ${dotenv.env['STRIPE_SECRET_KEY']}",
             "Content-Type": "application/x-www-form-urlencoded"
           });
 

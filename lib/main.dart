@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:other_stripe/homepage.dart';
-import 'package:other_stripe/keys.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load();
 
-  Stripe.publishableKey = publishableKey;
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '';
   await Stripe.instance.applySettings();
 
   runApp(const MyApp());
